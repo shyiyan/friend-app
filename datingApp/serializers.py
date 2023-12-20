@@ -10,10 +10,36 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'bio', 'firstName', 'lastName', 'email', 'profilePicture')
-"""
+
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         required=True, 
         validators=[UniqueValidator(queryset=User.objects.all())]
                                    )
- """
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+    class Meta:
+        model = User
+        fields = ('username', 'password', 'password2', 'email', 'firstName', 'lastName')
+        extra_kwargs = {
+            'firstName' : {'required': True},
+            'lastName' : {'required': True}
+        }
+
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError(
+                {"password": "Password incorrect"}
+            )
+        return attrs
+    
+    def create(self, validated_data):
+        user = User.objects.create(
+            username = validated_data['username'],
+            email = validated_data['email'],
+            firstName = validated_data['firstName'],
+            lastName = validated_data['lastName']
+        )
+        user.save()
+        return user
+
