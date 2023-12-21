@@ -1,4 +1,4 @@
-backend for interest based dating app
+Backend for interest based dating app
 
 To start the app, start the database first with the following command:
 sudo /opt/homebrew/bin/mysql.server start
