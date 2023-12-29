@@ -10,7 +10,7 @@ class User(AbstractBaseUser):
     lastName = models.CharField(max_length=200)
     email = models.EmailField(unique=True)
     profilePicture = models.ImageField()
-    password = models.CharField(max_length=200, default='123')
+    password = models.CharField(max_length=200)
 
 
     def __str__(self):
