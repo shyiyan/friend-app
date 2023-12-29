@@ -20,7 +20,7 @@ from .views import UserList, UserDetailAPI, RegisterUserAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', UserList.as_view(), name = 'user-list'),
-    path('user-details', UserDetailAPI.as_view()),
+    #path('users/', UserList.as_view(), name = 'user-list'),
+    path('user-details/<int:user_id>', UserDetailAPI.as_view(), name='user_detail'),
     path('register', RegisterUserAPIView.as_view())
 ]

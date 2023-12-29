@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import generics
 
+from django.shortcuts import get_object_or_404
+
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -20,8 +22,8 @@ class UserList(generics.ListCreateAPIView):
 class UserDetailAPI(APIView):
     authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
-    def get(self, request, *args, **kwargs):
-        user = User.objects.get(id = request.user.id)
+    def get(self, request, user_id, *args, **kwargs):
+        user = get_object_or_404(User, id=user_id)
         serializer = UserSerializer(user)
         return Response(serializer.data)
     
