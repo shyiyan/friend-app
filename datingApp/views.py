@@ -1,12 +1,16 @@
 # datingApp/views.py
 from rest_framework import generics
 from .models import User
-from .serializers import UserSerializer, RegisterSerializer
+from .serializers import UserSerializer, RegisterSerializer, UserLoginSerializer
 
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 #from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+
+
+from rest_framework.authtoken.models import Token
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import generics
@@ -30,3 +34,29 @@ class UserDetailAPI(APIView):
 class RegisterUserAPIView(generics.CreateAPIView):
     permission_classes = (AllowAny, )
     serializer_class = RegisterSerializer
+
+class LoginView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserLoginSerializer
+    permission_classes = (AllowAny, )
+
+    def create(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        password = request.data.get('password')
+        try:
+            user = User.objects.get(email=email)
+        except ObjectDoesNotExist:
+            return Response({'error': 'User not found.'}, status=404)
+
+        print(type(user))
+
+
+        if user.check_password(password):
+            token, created = Token.objects.get_or_create(user=user)
+            #response_data = {
+            #    'token': token.key,
+            #    'user' : UserLoginSerializer(user).data
+            #}
+            #return Response(response_data)
+        else:
+           return Response({'error': 'Invalid credentials'}, status=401)
