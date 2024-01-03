@@ -154,3 +154,5 @@ PASSWORD_HASHERS = [
     # Add other hashers as needed
 ]
 
+AUTH_USER_MODEL = 'datingApp.User'
+

@@ -9,6 +9,8 @@ from rest_framework.response import Response
 #from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model 
+
 
 
 
@@ -49,27 +51,14 @@ class LoginView(generics.CreateAPIView):
         password = request.data.get('password')
         user = User.objects.get(email=email)
 
-        #user = authenticate(request, email=email, password=password)
-        # try:
-        #     user = User.objects.get(email=email)
-        # except ObjectDoesNotExist:
-        #     return Response({'error': 'User not found.'}, status=404)
-
-        print(type(user))
-        
-
 
         if user.check_password(password):
-            #print(user.username)
-            #token, created = Token.objects.get_or_create(user=user)
-            Token.objects.create(user=user)
-            #response_data = {
-            #    'token': token.key,
-            #    'user' : UserLoginSerializer(user).data
-            #}
+
+            token, created = Token.objects.get_or_create(user=user)
             response_data = {
-                'lol': "lol"
-            }
+                'token': token.key,
+                'user' : UserLoginSerializer(user).data
+             }
             return Response(response_data)
         else:
            return Response({'error': 'Invalid credentials'}, status=401)
