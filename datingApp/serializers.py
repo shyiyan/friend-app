@@ -1,6 +1,6 @@
 # datingApp/serializers.py
 from rest_framework import serializers
-from .models import User
+from .models import User, Category
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.validators import UniqueValidator
@@ -59,4 +59,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('name')
 

@@ -1,7 +1,7 @@
 # datingApp/views.py
 from rest_framework import generics
-from .models import User
-from .serializers import UserSerializer, RegisterSerializer, UserLoginSerializer
+from .models import User, Category
+from .serializers import UserSerializer, RegisterSerializer, UserLoginSerializer, CategorySerializer
 
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
@@ -62,3 +62,7 @@ class LoginView(generics.CreateAPIView):
             return Response(response_data)
         else:
            return Response({'error': 'Invalid credentials'}, status=401)
+        
+class CategoryList(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
