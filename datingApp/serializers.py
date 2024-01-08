@@ -61,7 +61,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 class CategorySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(
+        required=True, 
+        validators=[UniqueValidator(queryset=Category.objects.all())]
+                                   )
     class Meta:
         model = Category
-        fields = ('name')
+        fields = ['name']
 

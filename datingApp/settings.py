@@ -141,10 +141,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         # Add any additional authentication classes if needed
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+    #'DEFAULT_PERMISSION_CLASSES': (
+    #    'rest_framework.permissions.IsAuthenticated',
         # Add any additional permission classes if needed
-    ),
+    #),
 }
 
 PASSWORD_HASHERS = [
