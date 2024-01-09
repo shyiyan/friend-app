@@ -1,7 +1,7 @@
 # datingApp/views.py
 from rest_framework import generics
-from .models import User, Category
-from .serializers import UserSerializer, RegisterSerializer, UserLoginSerializer, CategorySerializer
+from .models import User, Category, Community
+from .serializers import UserSerializer, RegisterSerializer, UserLoginSerializer, CategorySerializer, CommunitySerializer
 
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
@@ -66,3 +66,9 @@ class LoginView(generics.CreateAPIView):
 class CategoryList(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+class CommunityList(generics.ListCreateAPIView):
+    queryset = Community.objects.all()
+    serializer_class = CommunitySerializer
+    
+

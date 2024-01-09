@@ -1,6 +1,6 @@
 # datingApp/serializers.py
 from rest_framework import serializers
-from .models import User, Category
+from .models import User, Category, Community
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.validators import UniqueValidator
@@ -22,9 +22,6 @@ class UserLoginSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'password')
         
-
-#User = get_user_model()
-
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         required=True, 
@@ -68,4 +65,12 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['name']
+
+class CommunitySerializer(serializers.ModelSerializer):
+    member = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
+
+    class Meta:
+        model = Community
+        fields = ('name', 'intro', 'members', 'category')
 

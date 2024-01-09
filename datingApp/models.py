@@ -28,7 +28,7 @@ class Category(models.Model):
 class Community(models.Model):
     name = models.CharField(max_length=255)
     intro = models.CharField(max_length=500)
-    members = models.ManyToManyField(User, related_name="communities")
+    members = models.ManyToManyField(User, related_name="communities", null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='communities')
 
 class Match(models.Model):
