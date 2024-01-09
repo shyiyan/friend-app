@@ -21,3 +21,25 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    
+class Community(models.Model):
+    name = models.CharField(max_length=255)
+    intro = models.CharField(max_length=500)
+    members = models.ManyToManyField(User, related_name="communities", null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='communities')
+
+class Match(models.Model):
+    firstUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='matches_sent')
+    secondUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='matches_received')
+    matched_time = models.DateTimeField(auto_now_add=True)
+    accepted = models.BooleanField(default=False)
+
+class Chat(models.Model):
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='chats')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_chats")
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_chats')
+    message = models.TextField()
+    sent_at = models.DateTimeField(auto_now_add=True)

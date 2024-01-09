@@ -1,9 +1,9 @@
 # datingApp/views.py
 from rest_framework import generics
-from .models import User
-from .serializers import UserSerializer, RegisterSerializer, UserLoginSerializer
+from .models import User, Category, Community
+from .serializers import UserSerializer, RegisterSerializer, UserLoginSerializer, CategorySerializer, CommunitySerializer, JoinCommunitySerializer
 
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 #from django.contrib.auth.models import User
@@ -20,6 +20,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import generics
 
 from django.shortcuts import get_object_or_404
+
+from rest_framework.decorators import api_view, permission_classes
 
 
 
@@ -62,3 +64,29 @@ class LoginView(generics.CreateAPIView):
             return Response(response_data)
         else:
            return Response({'error': 'Invalid credentials'}, status=401)
+        
+class CategoryList(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class CommunityList(generics.ListCreateAPIView):
+    queryset = Community.objects.all()
+    serializer_class = CommunitySerializer
+    
+#when testing in postman, add header with key "Authorization",  value "Token your_token"
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def join_community(request):
+    serializer = JoinCommunitySerializer(data=request.data)
+
+    if serializer.is_valid():
+        community_id = serializer.validated_data['community_id']
+        try:
+            community = Community.objects.get(pk=community_id)
+            community.members.add(request.user)
+            return Response({'message': 'Joined community successfully'}, status=200)
+        except Community.DoesNotExist:
+            return Response({'error': 'Community not found'}, status=404)
+    else:
+        print(serializer.errors)
+        return Response({'error': 'Invalid data.'}, status=400)
