@@ -74,3 +74,7 @@ class CommunitySerializer(serializers.ModelSerializer):
         model = Community
         fields = ('name', 'intro', 'members', 'category')
 
+
+class JoinCommunitySerializer(serializers.Serializer):
+    community_id = serializers.IntegerField()
+
