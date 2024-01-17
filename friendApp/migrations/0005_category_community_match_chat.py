@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('datingApp', '0004_alter_user_options_alter_user_managers_and_more'),
+        ('friendApp', '0004_alter_user_options_alter_user_managers_and_more'),
     ]
 
     operations = [
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('intro', models.CharField(max_length=500)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='communities', to='datingApp.category')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='communities', to='friendApp.category')),
                 ('members', models.ManyToManyField(related_name='communities', to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('sent_at', models.DateTimeField(auto_now_add=True)),
                 ('receiver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_chats', to=settings.AUTH_USER_MODEL)),
                 ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_chats', to=settings.AUTH_USER_MODEL)),
-                ('match', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='chats', to='datingApp.match')),
+                ('match', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='chats', to='friendApp.match')),
             ],
         ),
     ]
