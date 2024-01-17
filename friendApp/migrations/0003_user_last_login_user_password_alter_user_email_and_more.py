@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('datingApp', '0002_auto_20231219_1455'),
+        ('friendApp', '0002_auto_20231219_1455'),
     ]
 
     operations = [

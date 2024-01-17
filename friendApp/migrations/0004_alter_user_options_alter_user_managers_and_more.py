@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('auth', '0012_alter_user_first_name_max_length'),
-        ('datingApp', '0003_user_last_login_user_password_alter_user_email_and_more'),
+        ('friendApp', '0003_user_last_login_user_password_alter_user_email_and_more'),
     ]
 
     operations = [
