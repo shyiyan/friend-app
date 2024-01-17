@@ -1,5 +1,5 @@
 """
-URL configuration for datingApp project.
+URL configuration for friendApp project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import UserList, UserDetailAPI, RegisterUserAPIView, LoginView, CategoryList, CommunityList, join_community
+from .views import UserList, UserDetailAPI, RegisterUserAPIView, LoginView, CategoryList, CommunityList, join_community, UsersInCommunityView, MatchListCreateView, MatchAcceptView
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -26,5 +26,8 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('categories/', CategoryList.as_view()),
     path('community/', CommunityList.as_view()),
-    path('join-community/', join_community, name='join-community')
+    path('join-community/', join_community, name='join-community'),
+    path('community/<int:community_id>/users/', UsersInCommunityView.as_view()),
+    path('matches/', MatchListCreateView.as_view()),
+    path('match/<int:pk>/accept/', MatchAcceptView.as_view())
 ]

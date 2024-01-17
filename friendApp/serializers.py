@@ -1,6 +1,6 @@
 # datingApp/serializers.py
 from rest_framework import serializers
-from .models import User, Category, Community
+from .models import User, Category, Community, Match
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.validators import UniqueValidator
@@ -72,9 +72,13 @@ class CommunitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Community
-        fields = ('name', 'intro', 'members', 'category')
+        fields = ('name', 'intro', 'member', 'category')
 
 
 class JoinCommunitySerializer(serializers.Serializer):
     community_id = serializers.IntegerField()
 
+class MatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Match
+        fields = '__all__'

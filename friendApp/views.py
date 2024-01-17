@@ -1,7 +1,7 @@
 # datingApp/views.py
 from rest_framework import generics
-from .models import User, Category, Community
-from .serializers import UserSerializer, RegisterSerializer, UserLoginSerializer, CategorySerializer, CommunitySerializer, JoinCommunitySerializer
+from .models import User, Category, Community, Match
+from .serializers import UserSerializer, RegisterSerializer, UserLoginSerializer, CategorySerializer, CommunitySerializer, JoinCommunitySerializer, MatchSerializer
 
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
@@ -90,3 +90,28 @@ def join_community(request):
     else:
         print(serializer.errors)
         return Response({'error': 'Invalid data.'}, status=400)
+    
+
+
+class UsersInCommunityView(generics.ListAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        community_id = self.kwargs.get('community_id')
+        community = Community.objects.get(pk=community_id)
+        return community.members.all()
+    
+class MatchListCreateView(generics.ListCreateAPIView):
+    queryset = Match.objects.all()
+    serializer_class = MatchSerializer
+
+class MatchAcceptView(generics.RetrieveUpdateAPIView):
+    queryset = Match.objects.all()
+    serializer_class = MatchSerializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.accepted = True
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
